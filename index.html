@@ -107,6 +107,7 @@ button{font-family:inherit;cursor:pointer;border:0}
   color:var(--deep);
   font-weight:950;
   margin-bottom:24px;
+  white-space:pre-line;
 }
 .action{
   width:100%;
@@ -118,6 +119,11 @@ button{font-family:inherit;cursor:pointer;border:0}
 }
 .speak{background:var(--green2);color:white}
 .copy{background:#edf7dd;color:var(--deep)}
+.featureQuestionKo{
+  font-size:20px;
+  font-weight:950;
+  margin-bottom:8px;
+}
 .featureQuestion{
   font-size:25px;
   line-height:1.35;
@@ -195,6 +201,11 @@ button{font-family:inherit;cursor:pointer;border:0}
     </div>
     <div class="section">
       <div class="label">기능 확인</div>
+
+      <div class="featureQuestionKo">
+        어떤 기능의 상품을 찾으세요?
+      </div>
+
       <div id="featureQuestion" class="featureQuestion"></div>
       <div class="featureGrid" id="featureGrid"></div>
       <button class="action speak" onclick="speakFeatureQuestion()">🔊 질문 음성 재생</button>
@@ -262,10 +273,10 @@ const data={
     item(
       "멤버십 혜택 안내",
       "회원 혜택 안내\n\n① 3만원 이상 구매 시\n4천원 할인 쿠폰 제공\n\n② 매월 올리브키트\n선착순 증정\n\n③ 결제금액의 0.5%\n포인트 적립\n\n④ 다양한 회원 혜택\n무료 이용 가능",
-      "Bạn có thể nhận coupon giảm 4.000 won khi mua từ 30.000 won, nhận Olive Kit hằng tháng theo số lượng giới hạn, và tích lũy 0,5% số tiền thanh toán thành điểm. Ngoài ra, bạn có thể sử dụng nhiều ưu đãi khác miễn phí.",
-      "Вы можете получить купон на скидку 4 000 вон при покупке от 30 000 вон, ежемесячно получать Olive Kit в порядке очереди, а также накапливать 0,5% от суммы оплаты в виде баллов. Кроме того, доступны разные бесплатные преимущества.",
-      "คุณจะได้รับคูปองส่วนลด 4,000 วอน เมื่อซื้อครบ 30,000 วอนขึ้นไป รับ Olive Kit ทุกเดือนตามจำนวนจำกัด และสะสมแต้ม 0.5% ของยอดชำระเงิน นอกจากนี้ยังสามารถใช้สิทธิประโยชน์อื่น ๆ ได้ฟรีค่ะ",
-      "可获得满30,000韩元立减4,000韩元的优惠券，每月还可按先到先得领取Olive Kit，并可累计支付金额0.5%的积分。此外，还可以免费享受多种会员福利。"
+      "① Coupon giảm 4.000 won\nkhi mua từ 30.000 won\n\n② Nhận Olive Kit hằng tháng\ntheo số lượng giới hạn\n\n③ Tích lũy 0,5%\nsố tiền thanh toán thành điểm\n\n④ Nhiều ưu đãi thành viên\nđược sử dụng miễn phí",
+      "① Купон на скидку 4 000 вон\nпри покупке от 30 000 вон\n\n② Ежемесячный Olive Kit\nв порядке очереди\n\n③ Начисление 0,5%\nот суммы покупки баллами\n\n④ Бесплатные\nпреимущества участника",
+      "① คูปองส่วนลด 4,000 วอน\nเมื่อซื้อครบ 30,000 วอน\n\n② รับ Olive Kit ทุกเดือน\nตามจำนวนจำกัด\n\n③ สะสมแต้ม 0.5%\nของยอดชำระเงิน\n\n④ สิทธิประโยชน์สมาชิก\nใช้งานได้ฟรี",
+      "① 满30,000韩元\n立减4,000韩元优惠券\n\n② 每月先到先得\n领取 Olive Kit\n\n③ 可累计支付金额\n0.5%的积分\n\n④ 免费享受\n多种会员福利"
     ),
     item(
       "ID 카드 확인",
