@@ -598,35 +598,68 @@ function renderOptions(){
   const q=document.getElementById("featureQuestion");
   const grid=document.getElementById("featureGrid");
   if(!q || !grid)return;
+
   q.innerText=optionQuestion[currentLang];
   grid.innerHTML="";
+
   optionItems.forEach(it=>{
     const b=document.createElement("button");
     b.className="featureTile";
     b.innerText=it.label[currentLang];
+
     b.onclick=()=>{
       previousScreen="optionScreen";
       openDetail(it,"기능 확인");
     };
+
     grid.appendChild(b);
   });
 }
 
 function openDetail(it,title){
   currentItem=it;
+
+  const itemLabel = typeof it.label === "object" ? it.label.ko : it.label;
+
   document.getElementById("detailTitle").innerText=title;
-  document.getElementById("detailLabel").innerText=it.label;
+  document.getElementById("detailLabel").innerText=itemLabel;
 
   const ko=document.getElementById("detailKo");
   ko.innerText=it.ko;
 
-  if(it.label==="멤버십 혜택 안내"){
+  if(itemLabel==="멤버십 혜택 안내"){
     ko.style.fontSize="18px";
     ko.style.lineHeight="1.6";
   }else{
     ko.style.fontSize="23px";
     ko.style.lineHeight="1.35";
   }
+
+  const tr=document.getElementById("detailTr");
+  tr.innerText=it[currentLang];
+
+  if(itemLabel==="멤버십 혜택 안내"){
+    if(currentLang==="ru"){
+      tr.style.fontSize="18px";
+      tr.style.lineHeight="1.45";
+    }else if(currentLang==="th"){
+      tr.style.fontSize="19px";
+      tr.style.lineHeight="1.45";
+    }else if(currentLang==="zh"){
+      tr.style.fontSize="20px";
+      tr.style.lineHeight="1.45";
+    }else{
+      tr.style.fontSize="21px";
+      tr.style.lineHeight="1.45";
+    }
+  }else{
+    tr.style.fontSize="25px";
+    tr.style.lineHeight="1.35";
+  }
+
+  document.getElementById("speakBtn").innerText="🔊 음성 재생";
+  show("detail");
+}
 
   const tr=document.getElementById("detailTr");
 tr.innerText=it[currentLang];
