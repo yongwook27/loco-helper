@@ -158,6 +158,7 @@ button{font-family:inherit;cursor:pointer;border:0}
   color:#555;
   line-height:1.45;
   margin-top:18px;
+  text-align:center;
 }
 </style>
 </>
@@ -183,7 +184,7 @@ button{font-family:inherit;cursor:pointer;border:0}
       <div class="grid" id="menus"></div>
 
       <div class="notice">
-        불편 및 개선사항은 SM 조용욱님에게 말씀해주세요.
+        Created by YongWook JO
       </div>
     </div>
   </div>
@@ -620,12 +621,31 @@ function speakText(text){
 
 function speak(){
   if(!currentItem)return;
+
   const btn=document.getElementById("speakBtn");
-  btn.innerText="🔊 재생중...";
-  speakText(currentItem[currentLang]);
-  setTimeout(()=>{
+
+  if(speechSynthesis.speaking){
+    speechSynthesis.cancel();
     btn.innerText="🔊 음성 재생";
-  },1800);
+    return;
+  }
+
+  const utter=new SpeechSynthesisUtterance(currentItem[currentLang]);
+  utter.lang=langInfo[currentLang][2];
+  utter.rate=.85;
+
+  btn.innerText="⏹ 음성 멈춤";
+
+  utter.onend=function(){
+    btn.innerText="🔊 음성 재생";
+  };
+
+  utter.onerror=function(){
+    btn.innerText="🔊 음성 재생";
+  };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
 }
 
 function speakFeatureQuestion(){
