@@ -710,7 +710,30 @@ function speak(){
 }
 
 function speakFeatureQuestion(){
-  speakText(optionQuestion[currentLang]);
+  const btn = document.querySelector("#optionScreen .speak");
+
+  if(speechSynthesis.speaking){
+    speechSynthesis.cancel();
+    btn.innerText = "🔊 질문 음성 재생";
+    return;
+  }
+
+  const utter = new SpeechSynthesisUtterance(optionQuestion[currentLang]);
+  utter.lang = langInfo[currentLang][2];
+  utter.rate = .85;
+
+  btn.innerText = "⏹ 질문 음성 멈춤";
+
+  utter.onend = function(){
+    btn.innerText = "🔊 질문 음성 재생";
+  };
+
+  utter.onerror = function(){
+    btn.innerText = "🔊 질문 음성 재생";
+  };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
 }
 
 function copy(){
