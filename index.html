@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>화성향남점 거주외국인 응대 HELPER</title>
+
+<style>
+:root{
+  --green:#0b7f35;
+  --green2:#2fac4a;
+  --light:#f2faf3;
+  --line:#dcebdd;
+  --text:#182218;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:#eef6ef;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+}
+.app{
+  max-width:430px;
+  margin:0 auto;
+  min-height:100vh;
+  background:white;
+}
+.header{
+  padding:26px 20px 20px;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  color:white;
+  border-radius:0 0 26px 26px;
+}
+.header small{font-weight:700;opacity:.9}
+.header h1{margin:8px 0 0;font-size:25px;line-height:1.25}
+.section{padding:18px}
+.title{font-size:17px;font-weight:900;margin:10px 0 12px}
+.langs,.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+}
+button{
+  font-family:inherit;
+  cursor:pointer;
+  border:0;
+}
+.lang,.menu,.quick,.phrase{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:18px;
+  padding:15px;
+  box-shadow:0 4px 12px rgba(0,0,0,.04);
+}
+.lang.active{
+  border:2px solid var(--green);
+  background:var(--light);
+  color:var(--green);
+  font-weight:900;
+}
+.menu{
+  min-height:100px;
+  font-size:17px;
+  font-weight:900;
+}
+.menu span{display:block;font-size:13px;color:#777;margin-top:7px}
+.quick{
+  width:100%;
+  text-align:left;
+  margin-bottom:10px;
+  font-size:16px;
+  font-weight:850;
+  color:var(--green);
+}
+.screen{display:none}
+.screen.active{display:block}
+.topbar{
+  height:58px;
+  background:var(--green);
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 16px;
+  font-weight:900;
+  font-size:18px;
+}
+.back{
+  background:transparent;
+  color:white;
+  font-size:28px;
+}
+.phrase{
+  width:100%;
+  text-align:left;
+  margin-bottom:10px;
+  font-size:16px;
+  font-weight:850;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
+.detail{
+  padding:24px 20px;
+}
+.ko{
+  font-size:28px;
+  font-weight:950;
+  line-height:1.3;
+  margin:28px 0;
+}
+.tr{
+  font-size:25px;
+  line-height:1.35;
+  color:var(--green);
+  font-weight:900;
+  margin-bottom:18px;
+}
+.pron{
+  background:#f6f8f6;
+  border-radius:16px;
+  padding:14px;
+  color:#666;
+  line-height:1.45;
+  margin-bottom:24px;
+}
+.action{
+  width:100%;
+  padding:17px;
+  border-radius:16px;
+  margin-bottom:10px;
+  font-size:17px;
+  font-weight:900;
+}
+.speak{background:var(--green);color:white}
+.copy{background:#edf7ed;color:var(--green)}
+.notice{
+  padding:14px;
+  background:var(--light);
+  border-radius:18px;
+  font-size:13px;
+  color:#555;
+  line-height:1.45;
+}
+</style>
+</head>
+
+<body>
+<div class="app">
+
+  <div id="home" class="screen active">
+    <div class="header">
+      <small>화성향남점</small>
+      <h1>거주외국인 응대<br>HELPER</h1>
+    </div>
+
+    <div class="section">
+      <div class="title">🌐 언어 선택</div>
+      <div class="langs" id="langs"></div>
+
+      <div class="title">⚡ 빠른 응대</div>
+      <div id="quick"></div>
+
+      <div class="title">📌 상황 선택</div>
+      <div class="grid" id="menus"></div>
+
+      <div class="notice" style="margin-top:18px;">
+        문구를 선택하면 번역문과 발음 표기가 크게 표시됩니다.  
+        음성 버튼을 누르면 선택한 언어로 재생됩니다.
+      </div>
+    </div>
+  </div>
+
+  <div id="list" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goHome()">‹</button>
+      <div id="listTitle"></div>
+    </div>
+    <div class="section" id="phraseList"></div>
+  </div>
+
+  <div id="detail" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="goList()">‹</button>
+      <div id="detailTitle"></div>
+    </div>
+    <div class="detail">
+      <div id="detailKo" class="ko"></div>
+      <div id="detailTr" class="tr"></div>
+      <div id="detailPron" class="pron"></div>
+      <button class="action speak" onclick="speak()">🔊 음성 재생</button>
+      <button class="action copy" onclick="copy()">📋 번역문 복사</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+let currentLang="vi";
+let currentCategory="signup";
+let currentItem=null;
+
+const langInfo={
+  vi:["🇻🇳","베트남어","vi-VN"],
+  ru:["🇷🇺","러시아어","ru-RU"],
+  th:["🇹🇭","태국어","th-TH"],
+  zh:["🇨🇳","중국어","zh-CN"]
+};
+
+const categories={
+  signup:["👤 회원가입","멤버십 · 가입 안내"],
+  pickup:["📦 픽업 전환","O4O 픽업 안내"],
+  kbeauty:["💄 K-BEAUTY","체험 · 이벤트 안내"],
+  store:["🛍️ 매장 안내","상품 · 추천 안내"]
+};
+
+const data={
+  signup:[
+    {
+      ko:"올리브영 멤버십 있으세요?",
+      vi:["Bạn có thành viên Olive Young không?","반 꼬 타인 비엔 올리브영 콩?"],
+      ru:["У вас есть карта Olive Young?","우 바스 예스찌 까르타 올리브영?"],
+      th:["เป็นสมาชิก Olive Young ไหมคะ?","뻰 싸마칙 올리브영 마이 카?"],
+      zh:["您有Olive Young会员吗？","닌 요우 올리브영 후이위안 마?"]
+    },
+    {
+      ko:"올리브영 멤버십 지금 가입해드릴까요?",
+      vi:["Tôi đăng ký thành viên Olive Young cho bạn nhé?","또이 당 끼 타인 비엔 올리브영 쪼 반 녜?"],
+      ru:["Хотите оформить членство Olive Young сейчас?","하찌쩨 아포르미찌 츨렌스트보 올리브영 세이차스?"],
+      th:["สมัครสมาชิก Olive Young ตอนนี้ไหมคะ?","싸막 싸마칙 올리브영 똔니 마이 카?"],
+      zh:["现在帮您注册Olive Young会员吗？","시엔짜이 방 닌 주처 올리브영 후이위안 마?"]
+    },
+    {
+      ko:"회원가입하시면 지금 바로 사용 가능한 쿠폰과 매달 좋은 혜택이 제공되는데 가입해드릴까요?",
+      vi:["Khi đăng ký thành viên, bạn sẽ nhận được coupon dùng ngay và nhiều ưu đãi mỗi tháng. Bạn có muốn đăng ký không?","키 당 끼 타인 비엔, 반 세 년 드억 쿠폰 중 응아이 바 니에우 우다이 모이 탕. 반 꼬 무온 당 끼 콩?"],
+      ru:["При регистрации вы получите купон, который можно использовать сразу, и ежемесячные бонусы. Хотите зарегистрироваться?","쁘리 레기스트라치이 브이 빨루치쩨 쿠폰 이 예제메샤츠니예 보누스이. 하찌쩨 자레기스트리로바짜?"],
+      th:["สมัครสมาชิกแล้วจะได้รับคูปองที่ใช้ได้ทันที และสิทธิพิเศษดี ๆ ทุกเดือน สนใจสมัครไหมคะ?","싸막 싸마칙 래우 짜 다이랍 쿠폰 티 차이 다이 탄티 래 씻티 피셋 디 디 툭 드안. 손짜이 싸막 마이 카?"],
+      zh:["注册会员后，可获得立即使用的优惠券和每月福利，您要注册吗？","주처 후이위안 허우, 커 훠더 리지 스용 더 요우후이취안 허 메이위에 푸리, 닌 야오 주처 마?"]
+    },
+    {
+      ko:"올리브영 앱 설치되어 있으세요?",
+      vi:["Bạn đã cài ứng dụng Olive Young chưa?","반 다 까이 응중 올리브영 쯔어?"],
+      ru:["У вас установлено приложение Olive Young?","우 바스 우스타노블레노 프릴라제니예 올리브영?"],
+      th:["ติดตั้งแอป Olive Young แล้วหรือยังคะ?","띳땅 앱 올리브영 래우 르양 카?"],
+      zh:["您安装Olive Young APP了吗？","닌 안좡 올리브영 앱 러 마?"]
+    },
+    {
+      ko:"카카오톡 가입되어 있으세요?",
+      vi:["Bạn có KakaoTalk không?","반 꼬 카카오톡 콩?"],
+      ru:["У вас есть KakaoTalk?","우 바스 예스찌 카카오톡?"],
+      th:["มี KakaoTalk ไหมคะ?","미 카카오톡 마이 카?"],
+      zh:["您有KakaoTalk吗？","닌 요우 카카오톡 마?"]
+    },
+    {
+      ko:"이름과 외국인등록번호를 입력해주세요.",
+      vi:["Vui lòng nhập họ tên và số đăng ký người nước ngoài.","부이 롱 녑 호 뗀 바 소 당 끼 응어이 느억 응오아이."],
+      ru:["Пожалуйста, введите имя и номер регистрации иностранца.","빠좔루스타, 브베지쩨 임야 이 노메르 레기스트라치이 이노스트란차."],
+      th:["กรุณากรอกชื่อและเลขบัตรต่างชาติค่ะ","까루나 끄록 츠 래 렉 밧 땅찻 카."],
+      zh:["请输入姓名和外国人登录证号码。","칭 수루 싱밍 허 와이궈런 덩루정 하오마."]
+    },
+    {
+      ko:"인증번호 받으셨나요?",
+      vi:["Bạn đã nhận mã xác nhận chưa?","반 다 년 마 싹 년 쯔어?"],
+      ru:["Вы получили код подтверждения?","브이 빨루칠리 콧 빠트베르즈데니야?"],
+      th:["ได้รับรหัสยืนยันหรือยังคะ?","다이랍 라핫 으앤얀 르양 카?"],
+      zh:["您收到验证码了吗？","닌 쇼우다오 얀정마 러 마?"]
+    },
+    {
+      ko:"축하합니다. 올리브영 회원이 되셨습니다.",
+      vi:["Chúc mừng! Bạn đã trở thành thành viên Olive Young.","쭉 믕! 반 다 쩌 타인 타인 비엔 올리브영."],
+      ru:["Поздравляем! Вы стали участником Olive Young.","빠즈드라블랴엠! 브이 스탈리 우차스트니콤 올리브영."],
+      th:["ยินดีด้วยค่ะ คุณเป็นสมาชิก Olive Young แล้ว","인디 두아이 카. 쿤 뻰 싸마칙 올리브영 래우."],
+      zh:["恭喜您成为Olive Young会员。","공시 닌 청웨이 올리브영 후이위안."]
+    }
+  ],
+
+  pickup:[
+    {
+      ko:"지금 매장에서 픽업 기능을 사용하셔서 하나라도 구매하시면 선물을 드리고 있어요. 해보시겠어요?",
+      vi:["Nếu dùng dịch vụ Pick-up và mua ít nhất một sản phẩm hôm nay, bạn sẽ nhận được quà tặng. Bạn muốn thử không?","네우 중 직 부 픽업 바 무아 잇 녓 못 산 펌 홈 나이, 반 세 년 드억 꽈 땅. 반 무온 트 콩?"],
+      ru:["Если вы воспользуетесь функцией Pick-up и купите хотя бы один товар, мы подарим подарок. Хотите попробовать?","예슬리 브이 바스폴주예쩨스 푼크치예이 픽업 이 쿠피쩨 하쨔 브이 아진 타바르, 므이 빠다림 빠다록. 하찌쩨 빠프로바바찌?"],
+      th:["หากใช้บริการ Pick-up และซื้อสินค้าอย่างน้อย 1 ชิ้น จะได้รับของขวัญ สนใจลองใช้ไหมคะ?","학 차이 브리깐 픽업 래 쓰 씬카 양노이 능 친, 짜 다이랍 컹콴. 손짜이 롱 차이 마이 카?"],
+      zh:["使用到店自提功能购买任意商品即可获得礼物，您想体验一下吗？","스용 다오뎬 즈티 궁넝 거우마이 런이 상품 지커 훠더 리우, 닌 샹 티옌 이샤 마?"]
+    },
+    {
+      ko:"혹시 이 상품 추가로 구매해보시겠어요?",
+      vi:["Bạn có muốn mua thêm sản phẩm này không?","반 꼬 무온 무아 템 산 펌 나이 콩?"],
+      ru:["Хотите добавить этот товар?","하찌쩨 다바비찌 에타트 타바르?"],
+      th:["สนใจซื้อสินค้านี้เพิ่มไหมคะ?","손짜이 쓰 씬카 니 펌 마이 카?"],
+      zh:["您要不要加购这个商品呢？","닌 야오 부야오 지아거우 쩌거 상품 너?"]
+    },
+    {
+      ko:"감사합니다. 앞으로 바쁘시거나 하면 픽업으로 주문하고 바로 수령해서 가셔도 됩니다.",
+      vi:["Cảm ơn bạn. Lần sau nếu bận, bạn có thể đặt Pick-up và nhận hàng ngay.","깜 언 반. 런 사우 네우 번, 반 꼬 테 닷 픽업 바 년 항 응아이."],
+      ru:["Спасибо. В следующий раз, если будете заняты, можно заказать Pick-up и сразу забрать товар.","스파시바. 브 슬레두유쉬 라스, 예슬리 부제쩨 자냐티, 모즈나 자카자찌 픽업 이 스라주 자브라찌 타바르."],
+      th:["ขอบคุณค่ะ ครั้งหน้าถ้ายุ่ง สามารถสั่งแบบ Pick-up แล้วมารับได้ทันทีค่ะ","컵쿤 카. 크랑 나 타 융, 싸맛 쌍 뱁 픽업 래우 마 랍 다이 탄티 카."],
+      zh:["谢谢。以后如果您忙，可以使用到店自提，下单后直接来取。","시에시에. 이허우 루궈 닌 망, 커이 스용 다오뎬 즈티, 샤단 허우 즈지에 라이 취."]
+    }
+  ],
+
+  kbeauty:[
+    {
+      ko:"지금 한국에서 인기있는 메이크업을 함께 시연해드리는데 참여해보시겠어요?",
+      vi:["Bạn có muốn thử kiểu trang điểm đang được yêu thích ở Hàn Quốc không?","반 꼬 무온 트 끼에우 짱 디엠 당 드억 이에우 틱 어 한 꾸옥 콩?"],
+      ru:["Хотите попробовать популярный корейский макияж?","하찌쩨 빠프로바바찌 빠풀랴르니 카레이스키 마키야쥐?"],
+      th:["อยากลองเมคอัพสไตล์เกาหลีที่กำลังนิยมไหมคะ?","야크 롱 메이크업 싸타일 까올리 티 깜랑 니욤 마이 카?"],
+      zh:["您想体验一下韩国现在流行的妆容吗？","닌 샹 티옌 이샤 한궈 시엔짜이 류싱 더 좡룽 마?"]
+    },
+    {
+      ko:"SNS에 인증샷을 올리시면 선물을 드리고 있어요.",
+      vi:["Nếu đăng ảnh lên SNS, bạn sẽ nhận được quà tặng.","네우 당 아인 렌 에스엔에스, 반 세 년 드억 꽈 땅."],
+      ru:["Если вы опубликуете фото в SNS, мы подарим подарок.","예슬리 브이 아푸블리쿠예쩨 포토 브 에스엔에스, 므이 빠다림 빠다록."],
+      th:["ถ้าโพสต์รูปลง SNS จะได้รับของขวัญค่ะ","타 포스트 룹 롱 에스엔에스 짜 다이랍 컹콴 카."],
+      zh:["上传SNS认证照片即可获得礼物。","상촨 에스엔에스 런정 자오피엔 지커 훠더 리우."]
+    },
+    {
+      ko:"이 서비스에 대한 만족도 조사를 해주시겠어요?",
+      vi:["Bạn có thể làm khảo sát mức độ hài lòng về dịch vụ này không?","반 꼬 테 람 카오 삿 믁 도 하이 롱 베 직 부 나이 콩?"],
+      ru:["Можете пройти опрос удовлетворенности этой услугой?","모제쩨 프라이찌 아프로스 우다블레트바료나스찌 에타이 우슬루가이?"],
+      th:["ช่วยทำแบบสำรวจความพึงพอใจเกี่ยวกับบริการนี้ได้ไหมคะ?","추아이 탐 뱁쌈루앗 쾀픙퍼짜이 끼여우깝 브리깐 니 다이 마이 카?"],
+      zh:["可以帮我们填写一下对此服务的满意度调查吗？","커이 방 워먼 티엔시에 이샤 두이 츠 푸우 더 만이두 디아오차 마?"]
+    },
+    {
+      ko:"SNS 사진 등 개인정보는 참고용으로만 사용하며, 안전하게 폐기하겠습니다.",
+      vi:["Ảnh SNS và thông tin cá nhân chỉ dùng để tham khảo và sẽ được hủy an toàn.","아인 에스엔에스 바 통 틴 까 년 찌 중 데 탐 카오 바 세 드억 후이 안 또안."],
+      ru:["Фото SNS и персональные данные будут использованы только для справки и безопасно удалены.","포토 에스엔에스 이 페르소날니예 단니예 부두트 이스폴조바니 톨카 들랴 스프라프키 이 베자파스나 우달레니."],
+      th:["รูป SNS และข้อมูลส่วนบุคคลจะใช้เพื่ออ้างอิงเท่านั้น และจะถูกทำลายอย่างปลอดภัยค่ะ","룹 에스엔에스 래 커문 쑤언 부콘 짜 차이 프아 앙잉 타오난 래 짜 툭 탐라이 양 쁠럿파이 카."],
+      zh:["SNS照片等个人信息仅作参考使用，并会安全销毁。","에스엔에스 자오피엔 덩 거런 신시 진 쭤 찬카오 스용, 빙 후이 안취안 샤오후이."]
+    }
+  ],
+
+  store:[
+    {
+      ko:"이 상품은 지금 품절이에요.",
+      vi:["Sản phẩm này hiện đang hết hàng.","산 펌 나이 히엔 당 헷 항."],
+      ru:["Этот товар сейчас закончился.","에타트 타바르 세이차스 자콘칠샤."],
+      th:["สินค้านี้ตอนนี้หมดค่ะ","씬카 니 똔니 못 카."],
+      zh:["这个商品现在缺货。","쩌거 상품 시엔짜이 취에훠."]
+    },
+    {
+      ko:"다른 상품을 추천해드릴까요?",
+      vi:["Tôi giới thiệu sản phẩm khác cho bạn nhé?","또이 저이 티에우 산 펌 칵 쪼 반 녜?"],
+      ru:["Хотите, я порекомендую другой товар?","하찌쩨, 야 파레카멘두유 드루고이 타바르?"],
+      th:["แนะนำสินค้าอื่นให้ไหมคะ?","내남 씬카 은 하이 마이 카?"],
+      zh:["需要给您推荐其他商品吗？","쉬야오 게이 닌 투이젠 치타 상품 마?"]
+    },
+    {
+      ko:"이 상품이 요즘 가장 인기가 많아요.",
+      vi:["Sản phẩm này hiện đang rất được yêu thích.","산 펌 나이 히엔 당 젓 드억 이에우 틱."],
+      ru:["Этот товар сейчас самый популярный.","에타트 타바르 세이차스 사미 빠풀랴르니."],
+      th:["สินค้านี้ช่วงนี้ได้รับความนิยมมากค่ะ","씬카 니 추앙니 다이랍 쾀 니욤 막 카."],
+      zh:["这个商品最近最受欢迎。","쩌거 상품 쭈이진 쭈이 쇼우 환잉."]
+    }
+  ]
+};
+
+const quick=[
+  data.signup[0],
+  data.signup[1],
+  data.signup[2],
+  data.kbeauty[0]
+];
+
+function renderLangs(){
+  const box=document.getElementById("langs");
+  box.innerHTML="";
+  Object.keys(langInfo).forEach(k=>{
+    const b=document.createElement("button");
+    b.className="lang"+(k===currentLang?" active":"");
+    b.innerHTML=`${langInfo[k][0]}<br>${langInfo[k][1]}`;
+    b.onclick=()=>{currentLang=k;renderLangs();renderQuick();}
+    box.appendChild(b);
+  });
+}
+
+function renderQuick(){
+  const box=document.getElementById("quick");
+  box.innerHTML="";
+  quick.forEach(item=>{
+    const b=document.createElement("button");
+    b.className="quick";
+    b.innerText=item.ko;
+    b.onclick=()=>openDetail(item,"빠른 응대");
+    box.appendChild(b);
+  });
+}
+
+function renderMenus(){
+  const box=document.getElementById("menus");
+  box.innerHTML="";
+  Object.keys(categories).forEach(k=>{
+    const b=document.createElement("button");
+    b.className="menu";
+    b.innerHTML=`${categories[k][0]}<span>${categories[k][1]}</span>`;
+    b.onclick=()=>openList(k);
+    box.appendChild(b);
+  });
+}
+
+function openList(cat){
+  currentCategory=cat;
+  document.getElementById("listTitle").innerText=categories[cat][0];
+  const list=document.getElementById("phraseList");
+  list.innerHTML="";
+  data[cat].forEach(item=>{
+    const b=document.createElement("button");
+    b.className="phrase";
+    b.innerHTML=`<span>${item.ko}</span><span>›</span>`;
+    b.onclick=()=>openDetail(item,categories[cat][0]);
+    list.appendChild(b);
+  });
+  show("list");
+}
+
+function openDetail(item,title){
+  currentItem=item;
+  document.getElementById("detailTitle").innerText=title;
+  document.getElementById("detailKo").innerText=item.ko;
+  document.getElementById("detailTr").innerText=item[currentLang][0];
+  document.getElementById("detailPron").innerText="발음: " + item[currentLang][1];
+  show("detail");
+}
+
+function show(id){
+  document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
+  document.getElementById(id).classList.add("active");
+}
+
+function goHome(){show("home")}
+function goList(){show("list")}
+
+function speak(){
+  if(!currentItem)return;
+  const text=currentItem[currentLang][0];
+  const utter=new SpeechSynthesisUtterance(text);
+  utter.lang=langInfo[currentLang][2];
+  utter.rate=.82;
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
+}
+
+function copy(){
+  if(!currentItem)return;
+  navigator.clipboard.writeText(currentItem[currentLang][0]);
+  alert("복사되었습니다.");
+}
+
+renderLangs();
+renderQuick();
+renderMenus();
+</script>
+</body>
+</html>
