@@ -594,7 +594,7 @@ function renderOptions(){
   optionItems.forEach(it=>{
     const b=document.createElement("button");
     b.className="featureTile";
-    b.innerText=it.label;
+    b.innerText=it.label[currentLang];
     b.onclick=()=>{
       previousScreen="optionScreen";
       openDetail(it,"기능 확인");
