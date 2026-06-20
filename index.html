@@ -3,48 +3,175 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>화성향남점 거주외국인 응대 HELPER</title>
+<title>LOCO HELPER</title>
+<meta name="theme-color" content="#A6CE39" />
 <style>
-:root{--green:#0b7f35;--green2:#32ad4c;--light:#f2faf3;--line:#dcebdd;--text:#172217}
+:root{
+  --green:#A6CE39;
+  --green2:#8DC63F;
+  --deep:#2F5D20;
+  --light:#F3FAE8;
+  --line:#DDECCB;
+  --text:#172217;
+}
 *{box-sizing:border-box}
-body{margin:0;background:#eef6ef;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;color:var(--text)}
+body{
+  margin:0;
+  background:#F3FAE8;
+  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  color:var(--text);
+}
 .app{max-width:430px;margin:0 auto;min-height:100vh;background:white}
-.header{padding:26px 20px 20px;background:linear-gradient(135deg,var(--green),var(--green2));color:white;border-radius:0 0 28px 28px}
-.header small{font-weight:800;opacity:.9}
-.header h1{margin:8px 0 0;font-size:25px;line-height:1.25}
+.header{
+  padding:30px 20px 24px;
+  background:linear-gradient(135deg,var(--green),var(--green2));
+  color:white;
+  border-radius:0 0 30px 30px;
+}
+.header small{font-weight:900;opacity:.95;color:#f8ffe8}
+.header h1{margin:8px 0 0;font-size:34px;line-height:1.05;letter-spacing:-.5px}
+.header p{margin:10px 0 0;font-weight:800;color:#f8ffe8}
 .section{padding:18px}
-.title{font-size:17px;font-weight:900;margin:12px 0}
-.langs,.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.title{font-size:17px;font-weight:950;margin:14px 0 12px}
+.langs,.grid,.quickGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.quickGrid{grid-template-columns:1fr}
 button{font-family:inherit;cursor:pointer;border:0}
-.lang,.menu,.quick,.phrase,.option{background:white;border:1px solid var(--line);border-radius:18px;padding:15px;box-shadow:0 4px 12px rgba(0,0,0,.04)}
-.lang{font-size:16px;font-weight:900}
-.lang .flag{display:block;font-size:34px;margin-bottom:4px}
-.lang.active{border:2px solid var(--green);background:var(--light);color:var(--green)}
-.menu{min-height:96px;font-size:17px;font-weight:900;text-align:left}
+.lang,.menu,.quick,.phrase,.option,.featureTile{
+  background:white;
+  border:1px solid var(--line);
+  border-radius:20px;
+  padding:16px;
+  box-shadow:0 4px 14px rgba(0,0,0,.045);
+}
+.lang{font-size:16px;font-weight:950}
+.lang .flag{display:block;font-size:36px;margin-bottom:4px}
+.lang.active{border:2px solid var(--green2);background:var(--light);color:var(--deep)}
+.menu{
+  min-height:98px;
+  font-size:17px;
+  font-weight:950;
+  text-align:left;
+}
 .menu span{display:block;font-size:13px;color:#777;margin-top:7px}
-.quick{width:100%;text-align:left;margin-bottom:10px;font-size:16px;font-weight:850;color:var(--green)}
-.screen{display:none}.screen.active{display:block}
-.topbar{height:58px;background:var(--green);color:white;display:flex;align-items:center;gap:12px;padding:0 16px;font-weight:900;font-size:18px}
-.back{background:transparent;color:white;font-size:28px}
-.phrase{width:100%;text-align:left;margin-bottom:10px;font-size:16px;font-weight:850;display:flex;justify-content:space-between;align-items:center}
+.quick{
+  width:100%;
+  text-align:left;
+  font-size:18px;
+  font-weight:950;
+  color:var(--deep);
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.quickIcon{font-size:26px}
+.screen{display:none}
+.screen.active{display:block}
+.topbar{
+  height:58px;
+  background:var(--green2);
+  color:white;
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:0 16px;
+  font-weight:950;
+  font-size:18px;
+}
+.back{background:transparent;color:white;font-size:30px}
+.phrase{
+  width:100%;
+  text-align:left;
+  margin-bottom:10px;
+  font-size:16px;
+  font-weight:900;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+}
 .detail{padding:24px 20px}
-.label{display:inline-block;padding:8px 12px;border-radius:999px;background:var(--light);color:var(--green);font-weight:900;margin-bottom:18px}
-.ko{font-size:25px;font-weight:950;line-height:1.35;margin-bottom:24px}
-.tr{font-size:25px;line-height:1.35;color:var(--green);font-weight:900;margin-bottom:24px}
-.action{width:100%;padding:17px;border-radius:16px;margin-bottom:10px;font-size:17px;font-weight:900}
-.speak{background:var(--green);color:white}
-.copy{background:#edf7ed;color:var(--green)}
-.option{width:100%;text-align:left;margin-bottom:10px;font-size:18px;font-weight:900}
-.notice{padding:14px;background:var(--light);border-radius:18px;font-size:13px;color:#555;line-height:1.45;margin-top:18px}
+.label{
+  display:inline-block;
+  padding:8px 12px;
+  border-radius:999px;
+  background:var(--light);
+  color:var(--deep);
+  font-weight:950;
+  margin-bottom:18px;
+}
+.ko{
+  font-size:25px;
+  font-weight:950;
+  line-height:1.35;
+  margin-bottom:24px;
+}
+.tr{
+  font-size:25px;
+  line-height:1.35;
+  color:var(--deep);
+  font-weight:950;
+  margin-bottom:24px;
+}
+.action{
+  width:100%;
+  padding:17px;
+  border-radius:16px;
+  margin-bottom:10px;
+  font-size:17px;
+  font-weight:950;
+}
+.speak{background:var(--green2);color:white}
+.copy{background:#edf7dd;color:var(--deep)}
+.option{
+  width:100%;
+  text-align:left;
+  margin-bottom:10px;
+  font-size:18px;
+  font-weight:950;
+}
+.featureQuestion{
+  font-size:25px;
+  line-height:1.35;
+  color:var(--deep);
+  font-weight:950;
+  margin-bottom:18px;
+}
+.featureGrid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  margin:18px 0;
+}
+.featureTile{
+  min-height:86px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:21px;
+  font-weight:950;
+  color:var(--deep);
+  background:var(--light);
+  border:2px solid var(--line);
+}
+.notice{
+  padding:14px;
+  background:var(--light);
+  border-radius:18px;
+  font-size:13px;
+  color:#555;
+  line-height:1.45;
+  margin-top:18px;
+}
 </style>
 </head>
 
 <body>
 <div class="app">
+
   <div id="home" class="screen active">
     <div class="header">
-      <small>화성향남점</small>
-      <h1>거주외국인 응대<br>HELPER</h1>
+      <small>화성향남점 거주외국인 응대</small>
+      <h1>LOCO<br>HELPER</h1>
+      <p>회원가입 · 픽업 · K-BEAUTY · 오퍼레이션</p>
     </div>
 
     <div class="section">
@@ -52,13 +179,13 @@ button{font-family:inherit;cursor:pointer;border:0}
       <div class="langs" id="langs"></div>
 
       <div class="title">⚡ 빠른 응대</div>
-      <div id="quick"></div>
+      <div class="quickGrid" id="quick"></div>
 
       <div class="title">📌 상황 선택</div>
       <div class="grid" id="menus"></div>
 
       <div class="notice">
-        키워드를 누르면 고객에게 보여줄 수 있는 문장과 번역문이 크게 표시됩니다.
+        키워드를 누르면 고객에게 보여줄 문장과 번역문이 크게 표시됩니다.
       </div>
     </div>
   </div>
@@ -74,9 +201,14 @@ button{font-family:inherit;cursor:pointer;border:0}
   <div id="optionScreen" class="screen">
     <div class="topbar">
       <button class="back" onclick="openList('operation')">‹</button>
-      <div>기능 선택</div>
+      <div>기능 확인</div>
     </div>
-    <div class="section" id="optionList"></div>
+    <div class="section">
+      <div class="label">기능 확인</div>
+      <div id="featureQuestion" class="featureQuestion"></div>
+      <div class="featureGrid" id="featureGrid"></div>
+      <button class="action speak" onclick="speakFeatureQuestion()">🔊 질문 음성 재생</button>
+    </div>
   </div>
 
   <div id="detail" class="screen">
@@ -88,10 +220,11 @@ button{font-family:inherit;cursor:pointer;border:0}
       <div id="detailLabel" class="label"></div>
       <div id="detailKo" class="ko"></div>
       <div id="detailTr" class="tr"></div>
-      <button class="action speak" onclick="speak()">🔊 음성 재생</button>
+      <button id="speakBtn" class="action speak" onclick="speak()">🔊 음성 재생</button>
       <button class="action copy" onclick="copy()">📋 번역문 복사</button>
     </div>
   </div>
+
 </div>
 
 <script>
@@ -118,7 +251,7 @@ function item(label,ko,vi,ru,th,zh){return {label,ko,vi,ru,th,zh};}
 
 const data={
   signup:[
-    item("멤버십 있으세요?","올리브영 멤버십 있으세요?","Bạn có thành viên Olive Young không?","У вас есть карта Olive Young?","เป็นสมาชิก Olive Young ไหมคะ?","您有Olive Young会员吗？"),
+    item("멤버십 유무","올리브영 멤버십 있으세요?","Bạn có thành viên Olive Young không?","У вас есть карта Olive Young?","เป็นสมาชิก Olive Young ไหมคะ?","您有Olive Young会员吗？"),
     item("멤버십 가입","올리브영 멤버십 지금 가입해드릴까요?","Tôi đăng ký thành viên Olive Young cho bạn nhé?","Хотите оформить членство Olive Young сейчас?","สมัครสมาชิก Olive Young ตอนนี้ไหมคะ?","现在帮您注册Olive Young会员吗？"),
     item("멤버십 혜택 안내","바로 사용 가능한 3만원 이상 구매 시 4천원 할인 쿠폰과 매달 올리브키트 선착순 증정, 그리고 결제금액의 0.5% 포인트 적립이 가능합니다. 그밖에 다양한 혜택을 무료로 이용 가능합니다.","Bạn có thể nhận coupon giảm 4.000 won khi mua từ 30.000 won, nhận Olive Kit hằng tháng theo số lượng giới hạn, và tích lũy 0,5% số tiền thanh toán thành điểm. Ngoài ra, bạn có thể sử dụng nhiều ưu đãi khác miễn phí.","Вы можете получить купон на скидку 4 000 вон при покупке от 30 000 вон, ежемесячно получать Olive Kit в порядке очереди, а также накапливать 0,5% от суммы оплаты в виде баллов. Кроме того, доступны разные бесплатные преимущества.","คุณจะได้รับคูปองส่วนลด 4,000 วอน เมื่อซื้อครบ 30,000 วอนขึ้นไป รับ Olive Kit ทุกเดือนตามจำนวนจำกัด และสะสมแต้ม 0.5% ของยอดชำระเงิน นอกจากนี้ยังสามารถใช้สิทธิประโยชน์อื่น ๆ ได้ฟรีค่ะ","可获得满30,000韩元立减4,000韩元的优惠券，每月还可按先到先得领取Olive Kit，并可累计支付金额0.5%的积分。此外，还可以免费享受多种会员福利。"),
     item("ID 카드 확인","거주외국인등록증(ID) 카드가 있으세요?","Bạn có thẻ đăng ký người nước ngoài không?","У вас есть карта регистрации иностранца?","มีบัตรลงทะเบียนชาวต่างชาติไหมคะ?","您有外国人登录证吗？"),
@@ -132,9 +265,9 @@ const data={
   ],
 
   pickup:[
-    item("픽업 이벤트 안내","지금 매장에서 픽업 기능을 사용하셔서 하나라도 구매하시면 선물을 드리고 있어요. 해보시겠어요?","Nếu dùng dịch vụ Pick-up và mua ít nhất một sản phẩm hôm nay, bạn sẽ nhận được quà tặng. Bạn muốn thử không?","Если вы воспользуетесь функцией Pick-up и купите хотя бы один товар, мы подарим подарок. Хотите попробовать?","หากใช้บริการ Pick-up และซื้อสินค้าอย่างน้อย 1 ชิ้น จะได้รับของขวัญ สนใจลองใช้ไหมคะ?","使用到店自提功能购买任意商品即可获得礼物，您想体验一下吗？"),
-    item("추가 구매 제안","혹시 이 상품 추가로 구매해보시겠어요?","Bạn có muốn mua thêm sản phẩm này không?","Хотите добавить этот товар?","สนใจซื้อสินค้านี้เพิ่มไหมคะ?","您要不要加购这个商品呢？"),
-    item("픽업 이용 안내","감사합니다. 앞으로 바쁘시거나 하면 픽업으로 주문하고 바로 수령해서 가셔도 됩니다.","Cảm ơn bạn. Lần sau nếu bận, bạn có thể đặt Pick-up và nhận hàng ngay.","Спасибо. В следующий раз, если будете заняты, можно заказать Pick-up и сразу забрать товар.","ขอบคุณค่ะ ครั้งหน้าถ้ายุ่ง สามารถสั่งแบบ Pick-up แล้วมารับได้ทันทีค่ะ","谢谢。以后如果您忙，可以使用到店自提，下单后直接来取。")
+    item("픽업 이벤트 안내","지금 픽업서비스를 이용하셔서 하나라도 구매하시면 선물을 드립니다. 이용해보시겠어요?","Nếu sử dụng dịch vụ Pick-up và mua ít nhất một sản phẩm, bạn sẽ nhận được quà tặng. Bạn muốn thử không?","Если вы воспользуетесь сервисом Pick-up и купите хотя бы один товар, вы получите подарок. Хотите попробовать?","หากใช้บริการ Pick-up และซื้อสินค้าอย่างน้อย 1 ชิ้น จะได้รับของขวัญ สนใจลองใช้ไหมคะ?","使用Pick-up服务并购买任意商品即可获得礼物，您想体验一下吗？"),
+    item("추가 구매 제안","이 상품을 픽업으로 추가 구매해보시겠어요?","Bạn có muốn mua thêm sản phẩm này bằng Pick-up không?","Хотите дополнительно купить этот товар через Pick-up?","สนใจซื้อสินค้านี้เพิ่มผ่าน Pick-up ไหมคะ?","您想通过Pick-up再购买这个商品吗？"),
+    item("픽업 이용 안내","픽업서비스는 올리브영 앱을 이용해서 미리 구매하고, 방문하여 바로 수령 가능합니다. 바쁘실 때 사용하기 좋은 서비스입니다.","Bạn có thể đặt hàng trước trên ứng dụng Olive Young và đến nhận ngay. Đây là dịch vụ rất tiện lợi khi bạn bận.","Сервис Pick-up позволяет заранее оформить заказ через приложение Olive Young и сразу забрать товар при посещении магазина. Удобно для занятых людей.","บริการ Pick-up สามารถสั่งซื้อผ่านแอป Olive Young ล่วงหน้าและมารับสินค้าได้ทันที เหมาะสำหรับช่วงเวลาที่คุณยุ่งค่ะ","Pick-up服务可通过Olive Young APP提前下单，到店后直接领取，非常适合忙碌时使用。")
   ],
 
   kbeauty:[
@@ -146,12 +279,14 @@ const data={
 
   operation:[
     item("상품 찾기","찾으시는 상품 있으세요?","Bạn đang tìm sản phẩm nào không?","Вы ищете какой-то товар?","กำลังมองหาสินค้าอะไรอยู่ไหมคะ?","您在找什么商品吗？"),
-    {type:"options", label:"원하는 기능 선택"},
+    {type:"options", label:"기능 확인"},
     item("품절 안내","이 상품은 지금 품절이에요.","Sản phẩm này hiện đang hết hàng.","Этот товар сейчас закончился.","สินค้านี้ตอนนี้หมดค่ะ","这个商品现在缺货。"),
     item("다른 상품 추천","다른 상품을 추천해드릴까요?","Tôi giới thiệu sản phẩm khác cho bạn nhé?","Хотите, я порекомендую другой товар?","แนะนำสินค้าอื่นให้ไหมคะ?","需要给您推荐其他商品吗？"),
     item("인기 상품 안내","이 상품이 요즘 가장 인기가 많아요.","Sản phẩm này hiện đang rất được yêu thích.","Этот товар сейчас самый популярный.","สินค้านี้ช่วงนี้ได้รับความนิยมมากค่ะ","这个商品最近最受欢迎。")
   ]
 };
+
+const optionQuestion=item("기능 확인","어떤 기능의 상품을 찾으세요?","Bạn đang tìm sản phẩm có công dụng gì?","Какой эффект товара вы ищете?","ต้องการสินค้าที่ช่วยเรื่องอะไรคะ?","您想找什么功效的商品？");
 
 const optionItems=[
   item("✨ 미백","이 상품은 미백에 도움되는 상품입니다.","Sản phẩm này giúp làm sáng da.","Этот товар помогает осветлить кожу.","สินค้านี้ช่วยเรื่องความกระจ่างใสค่ะ","这个商品有助于美白。"),
@@ -160,7 +295,7 @@ const optionItems=[
   item("💧 수분","이 상품은 수분에 도움되는 상품입니다.","Sản phẩm này giúp cấp ẩm cho da.","Этот товар помогает увлажнить кожу.","สินค้านี้ช่วยเติมความชุ่มชื้นให้ผิวค่ะ","这个商品有助于补水保湿。")
 ];
 
-const quick=[data.signup[0],data.signup[1],data.signup[2],data.kbeauty[0]];
+const quick=[data.signup[0],data.signup[1],data.signup[2]];
 
 function renderLangs(){
   const box=document.getElementById("langs");
@@ -169,7 +304,7 @@ function renderLangs(){
     const b=document.createElement("button");
     b.className="lang"+(k===currentLang?" active":"");
     b.innerHTML=`<span class="flag">${langInfo[k][0]}</span>${langInfo[k][1]}`;
-    b.onclick=()=>{currentLang=k;renderLangs();};
+    b.onclick=()=>{currentLang=k;renderLangs();renderOptions();};
     box.appendChild(b);
   });
 }
@@ -177,10 +312,11 @@ function renderLangs(){
 function renderQuick(){
   const box=document.getElementById("quick");
   box.innerHTML="";
-  quick.forEach(it=>{
+  const icons=["👤","📱","🎁"];
+  quick.forEach((it,i)=>{
     const b=document.createElement("button");
     b.className="quick";
-    b.innerText=it.label;
+    b.innerHTML=`<span class="quickIcon">${icons[i]}</span><span>${it.label}</span>`;
     b.onclick=()=>{previousScreen="home";openDetail(it,"빠른 응대");};
     box.appendChild(b);
   });
@@ -215,23 +351,23 @@ function openList(cat){
 }
 
 function openOptions(){
-  const box=document.getElementById("optionList");
-  box.innerHTML="";
-  const q=item("원하는 기능 선택","어떤 기능의 상품을 찾으세요?","Bạn đang tìm sản phẩm có công dụng gì?","Какой эффект товара вы ищете?","ต้องการสินค้าที่ช่วยเรื่องอะไรคะ?","您想找什么功效的商品？");
-  const qbtn=document.createElement("button");
-  qbtn.className="option";
-  qbtn.innerText="질문 먼저 보여주기";
-  qbtn.onclick=()=>{previousScreen="optionScreen";openDetail(q,"기능 선택");};
-  box.appendChild(qbtn);
+  renderOptions();
+  show("optionScreen");
+}
 
+function renderOptions(){
+  const q=document.getElementById("featureQuestion");
+  const grid=document.getElementById("featureGrid");
+  if(!q || !grid)return;
+  q.innerText=optionQuestion[currentLang];
+  grid.innerHTML="";
   optionItems.forEach(it=>{
     const b=document.createElement("button");
-    b.className="option";
+    b.className="featureTile";
     b.innerText=it.label;
-    b.onclick=()=>{previousScreen="optionScreen";openDetail(it,"기능 선택");};
-    box.appendChild(b);
+    b.onclick=()=>{previousScreen="optionScreen";openDetail(it,"기능 확인");};
+    grid.appendChild(b);
   });
-  show("optionScreen");
 }
 
 function openDetail(it,title){
@@ -240,6 +376,7 @@ function openDetail(it,title){
   document.getElementById("detailLabel").innerText=it.label;
   document.getElementById("detailKo").innerText=it.ko;
   document.getElementById("detailTr").innerText=it[currentLang];
+  document.getElementById("speakBtn").innerText="🔊 음성 재생";
   show("detail");
 }
 
@@ -248,16 +385,27 @@ function show(id){
   document.getElementById(id).classList.add("active");
 }
 
-function goHome(){show("home");}
-function goBackFromDetail(){show(previousScreen);}
+function goHome(){show("home")}
+function goBackFromDetail(){show(previousScreen)}
 
-function speak(){
-  if(!currentItem)return;
-  const utter=new SpeechSynthesisUtterance(currentItem[currentLang]);
+function speakText(text){
+  const utter=new SpeechSynthesisUtterance(text);
   utter.lang=langInfo[currentLang][2];
   utter.rate=.85;
   speechSynthesis.cancel();
   speechSynthesis.speak(utter);
+}
+
+function speak(){
+  if(!currentItem)return;
+  const btn=document.getElementById("speakBtn");
+  btn.innerText="🔊 재생중...";
+  speakText(currentItem[currentLang]);
+  setTimeout(()=>{btn.innerText="🔊 음성 재생";},1800);
+}
+
+function speakFeatureQuestion(){
+  speakText(optionQuestion[currentLang]);
 }
 
 function copy(){
@@ -269,6 +417,7 @@ function copy(){
 renderLangs();
 renderQuick();
 renderMenus();
+renderOptions();
 </script>
 </body>
 </html>
