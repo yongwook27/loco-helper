@@ -4,8 +4,8 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>LOCO HELPER</title>
-<meta name="apple-mobile-web-app-title" content="LOCO HELPER">
 <meta name="theme-color" content="#A6CE39" />
+<meta name="apple-mobile-web-app-title" content="LOCO HELPER">
 <style>
 :root{
   --green:#A6CE39;
@@ -37,7 +37,7 @@ body{
 .langs,.grid,.quickGrid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
 .quickGrid{grid-template-columns:1fr}
 button{font-family:inherit;cursor:pointer;border:0}
-.lang,.menu,.quick,.phrase,.option,.featureTile{
+.lang,.menu,.quick,.phrase,.featureTile{
   background:white;
   border:1px solid var(--line);
   border-radius:20px;
@@ -47,12 +47,7 @@ button{font-family:inherit;cursor:pointer;border:0}
 .lang{font-size:16px;font-weight:950}
 .lang .flag{display:block;font-size:36px;margin-bottom:4px}
 .lang.active{border:2px solid var(--green2);background:var(--light);color:var(--deep)}
-.menu{
-  min-height:98px;
-  font-size:17px;
-  font-weight:950;
-  text-align:left;
-}
+.menu{min-height:98px;font-size:17px;font-weight:950;text-align:left}
 .menu span{display:block;font-size:13px;color:#777;margin-top:7px}
 .quick{
   width:100%;
@@ -100,10 +95,11 @@ button{font-family:inherit;cursor:pointer;border:0}
   margin-bottom:18px;
 }
 .ko{
-  font-size:25px;
+  font-size:23px;
   font-weight:950;
   line-height:1.35;
   margin-bottom:24px;
+  white-space:pre-line;
 }
 .tr{
   font-size:25px;
@@ -122,13 +118,6 @@ button{font-family:inherit;cursor:pointer;border:0}
 }
 .speak{background:var(--green2);color:white}
 .copy{background:#edf7dd;color:var(--deep)}
-.option{
-  width:100%;
-  text-align:left;
-  margin-bottom:10px;
-  font-size:18px;
-  font-weight:950;
-}
 .featureQuestion{
   font-size:25px;
   line-height:1.35;
@@ -248,46 +237,209 @@ const categories={
   operation:["⚙️ 오퍼레이션","상품 안내 · 추천"]
 };
 
-function item(label,ko,vi,ru,th,zh){return {label,ko,vi,ru,th,zh};}
+function item(label,ko,vi,ru,th,zh){
+  return {label,ko,vi,ru,th,zh};
+}
 
 const data={
   signup:[
-    item("멤버십 유무","올리브영 멤버십 있으세요?","Bạn có thành viên Olive Young không?","У вас есть карта Olive Young?","เป็นสมาชิก Olive Young ไหมคะ?","您有Olive Young会员吗？"),
-    item("멤버십 가입","올리브영 멤버십 지금 가입해드릴까요?","Tôi đăng ký thành viên Olive Young cho bạn nhé?","Хотите оформить членство Olive Young сейчас?","สมัครสมาชิก Olive Young ตอนนี้ไหมคะ?","现在帮您注册Olive Young会员吗？"),
-    item("멤버십 혜택 안내","바로 사용 가능한 3만원 이상 구매 시 4천원 할인 쿠폰과 매달 올리브키트 선착순 증정, 그리고 결제금액의 0.5% 포인트 적립이 가능합니다. 그밖에 다양한 혜택을 무료로 이용 가능합니다.","Bạn có thể nhận coupon giảm 4.000 won khi mua từ 30.000 won, nhận Olive Kit hằng tháng theo số lượng giới hạn, và tích lũy 0,5% số tiền thanh toán thành điểm. Ngoài ra, bạn có thể sử dụng nhiều ưu đãi khác miễn phí.","Вы можете получить купон на скидку 4 000 вон при покупке от 30 000 вон, ежемесячно получать Olive Kit в порядке очереди, а также накапливать 0,5% от суммы оплаты в виде баллов. Кроме того, доступны разные бесплатные преимущества.","คุณจะได้รับคูปองส่วนลด 4,000 วอน เมื่อซื้อครบ 30,000 วอนขึ้นไป รับ Olive Kit ทุกเดือนตามจำนวนจำกัด และสะสมแต้ม 0.5% ของยอดชำระเงิน นอกจากนี้ยังสามารถใช้สิทธิประโยชน์อื่น ๆ ได้ฟรีค่ะ","可获得满30,000韩元立减4,000韩元的优惠券，每月还可按先到先得领取Olive Kit，并可累计支付金额0.5%的积分。此外，还可以免费享受多种会员福利。"),
-    item("ID 카드 확인","거주외국인등록증(ID) 카드가 있으세요?","Bạn có thẻ đăng ký người nước ngoài không?","У вас есть карта регистрации иностранца?","มีบัตรลงทะเบียนชาวต่างชาติไหมคะ?","您有外国人登录证吗？"),
-    item("가입 선물 안내","지금 가입하시면 소정의 선물을 드리고 있어요.","Nếu đăng ký ngay bây giờ, bạn sẽ nhận được một món quà nhỏ.","Если вы зарегистрируетесь сейчас, мы подарим небольшой подарок.","ถ้าสมัครตอนนี้ จะได้รับของขวัญเล็ก ๆ น้อย ๆ ค่ะ","现在注册的话，可以获得一份小礼物。"),
-    item("휴대폰 본인명의 확인","휴대폰 명의가 본인 명의이신가요?","Số điện thoại này đứng tên bạn phải không?","Телефон оформлен на ваше имя?","เบอร์โทรศัพท์นี้เป็นชื่อของคุณเองไหมคะ?","这个手机号是您本人名义的吗？"),
-    item("앱 설치 확인","올리브영 앱 설치되어 있으세요?","Bạn đã cài ứng dụng Olive Young chưa?","У вас установлено приложение Olive Young?","ติดตั้งแอป Olive Young แล้วหรือยังคะ?","您安装Olive Young APP了吗？"),
-    item("카카오톡 확인","카카오톡 가입되어 있으세요?","Bạn có KakaoTalk không?","У вас есть KakaoTalk?","มี KakaoTalk ไหมคะ?","您有KakaoTalk吗？"),
-    item("외국인등록번호 입력","이름과 외국인등록번호를 입력해주세요.","Vui lòng nhập họ tên và số đăng ký người nước ngoài.","Пожалуйста, введите имя и номер регистрации иностранца.","กรุณากรอกชื่อและเลขบัตรต่างชาติค่ะ","请输入姓名和外国人登录证号码。"),
-    item("인증번호 확인","인증번호 받으셨나요?","Bạn đã nhận mã xác nhận chưa?","Вы получили код подтверждения?","ได้รับรหัสยืนยันหรือยังคะ?","您收到验证码了吗？"),
-    item("가입 완료","축하합니다. 올리브영 회원이 되셨습니다.","Chúc mừng! Bạn đã trở thành thành viên Olive Young.","Поздравляем! Вы стали участником Olive Young.","ยินดีด้วยค่ะ คุณเป็นสมาชิก Olive Young แล้ว","恭喜您成为Olive Young会员。")
+    item(
+      "멤버십 유무",
+      "올리브영 멤버십 있으세요?",
+      "Bạn có thành viên Olive Young không?",
+      "У вас есть карта Olive Young?",
+      "เป็นสมาชิก Olive Young ไหมคะ?",
+      "您有Olive Young会员吗？"
+    ),
+    item(
+      "멤버십 가입",
+      "올리브영 멤버십 지금 가입해드릴까요?",
+      "Tôi đăng ký thành viên Olive Young cho bạn nhé?",
+      "Хотите оформить членство Olive Young сейчас?",
+      "สมัครสมาชิก Olive Young ตอนนี้ไหมคะ?",
+      "现在帮您注册Olive Young会员吗？"
+    ),
+    item(
+      "멤버십 혜택 안내",
+      "회원 혜택 안내\n\n① 3만원 이상 구매 시\n4천원 할인 쿠폰 제공\n\n② 매월 올리브키트\n선착순 증정\n\n③ 결제금액의 0.5%\n포인트 적립\n\n④ 다양한 회원 혜택\n무료 이용 가능",
+      "Bạn có thể nhận coupon giảm 4.000 won khi mua từ 30.000 won, nhận Olive Kit hằng tháng theo số lượng giới hạn, và tích lũy 0,5% số tiền thanh toán thành điểm. Ngoài ra, bạn có thể sử dụng nhiều ưu đãi khác miễn phí.",
+      "Вы можете получить купон на скидку 4 000 вон при покупке от 30 000 вон, ежемесячно получать Olive Kit в порядке очереди, а также накапливать 0,5% от суммы оплаты в виде баллов. Кроме того, доступны разные бесплатные преимущества.",
+      "คุณจะได้รับคูปองส่วนลด 4,000 วอน เมื่อซื้อครบ 30,000 วอนขึ้นไป รับ Olive Kit ทุกเดือนตามจำนวนจำกัด และสะสมแต้ม 0.5% ของยอดชำระเงิน นอกจากนี้ยังสามารถใช้สิทธิประโยชน์อื่น ๆ ได้ฟรีค่ะ",
+      "可获得满30,000韩元立减4,000韩元的优惠券，每月还可按先到先得领取Olive Kit，并可累计支付金额0.5%的积分。此外，还可以免费享受多种会员福利。"
+    ),
+    item(
+      "ID 카드 확인",
+      "외국인등록증(ID)을 소지하고 계신가요?",
+      "Bạn có thẻ đăng ký người nước ngoài không?",
+      "У вас есть карта регистрации иностранца?",
+      "มีบัตรลงทะเบียนชาวต่างชาติไหมคะ?",
+      "您有外国人登录证吗？"
+    ),
+    item(
+      "가입 선물 안내",
+      "지금 가입하시면 소정의 가입 선물을 제공해드립니다.",
+      "Nếu đăng ký ngay bây giờ, bạn sẽ nhận được một món quà nhỏ.",
+      "Если вы зарегистрируетесь сейчас, мы подарим небольшой подарок.",
+      "ถ้าสมัครตอนนี้ จะได้รับของขวัญเล็ก ๆ น้อย ๆ ค่ะ",
+      "现在注册的话，可以获得一份小礼物。"
+    ),
+    item(
+      "휴대폰 본인명의 확인",
+      "휴대폰이 본인 명의로 개통되어 있으신가요?",
+      "Số điện thoại này đứng tên bạn phải không?",
+      "Телефон оформлен на ваше имя?",
+      "เบอร์โทรศัพท์นี้เป็นชื่อของคุณเองไหมคะ?",
+      "这个手机号是您本人名义的吗？"
+    ),
+    item(
+      "앱 설치 확인",
+      "올리브영 앱 설치되어 있으세요?",
+      "Bạn đã cài ứng dụng Olive Young chưa?",
+      "У вас установлено приложение Olive Young?",
+      "ติดตั้งแอป Olive Young แล้วหรือยังคะ?",
+      "您安装Olive Young APP了吗？"
+    ),
+    item(
+      "카카오톡 확인",
+      "카카오톡 가입되어 있으세요?",
+      "Bạn có KakaoTalk không?",
+      "У вас есть KakaoTalk?",
+      "มี KakaoTalk ไหมคะ?",
+      "您有KakaoTalk吗？"
+    ),
+    item(
+      "외국인등록번호 입력",
+      "이름과 외국인등록번호를 입력해주세요.",
+      "Vui lòng nhập họ tên và số đăng ký người nước ngoài.",
+      "Пожалуйста, введите имя и номер регистрации иностранца.",
+      "กรุณากรอกชื่อและเลขบัตรต่างชาติค่ะ",
+      "请输入姓名和外国人登录证号码。"
+    ),
+    item(
+      "인증번호 확인",
+      "인증번호 받으셨나요?",
+      "Bạn đã nhận mã xác nhận chưa?",
+      "Вы получили код подтверждения?",
+      "ได้รับรหัสยืนยันหรือยังคะ?",
+      "您收到验证码了吗？"
+    ),
+    item(
+      "가입 완료",
+      "축하합니다. 올리브영 회원이 되셨습니다.",
+      "Chúc mừng! Bạn đã trở thành thành viên Olive Young.",
+      "Поздравляем! Вы стали участником Olive Young.",
+      "ยินดีด้วยค่ะ คุณเป็นสมาชิก Olive Young แล้ว",
+      "恭喜您成为Olive Young会员。"
+    )
   ],
 
   pickup:[
-    item("픽업 이벤트 안내","지금 픽업서비스를 이용하셔서 하나라도 구매하시면 선물을 드립니다. 이용해보시겠어요?","Nếu sử dụng dịch vụ Pick-up và mua ít nhất một sản phẩm, bạn sẽ nhận được quà tặng. Bạn muốn thử không?","Если вы воспользуетесь сервисом Pick-up и купите хотя бы один товар, вы получите подарок. Хотите попробовать?","หากใช้บริการ Pick-up และซื้อสินค้าอย่างน้อย 1 ชิ้น จะได้รับของขวัญ สนใจลองใช้ไหมคะ?","使用Pick-up服务并购买任意商品即可获得礼物，您想体验一下吗？"),
-    item("추가 구매 제안","이 상품을 픽업으로 추가 구매해보시겠어요?","Bạn có muốn mua thêm sản phẩm này bằng Pick-up không?","Хотите дополнительно купить этот товар через Pick-up?","สนใจซื้อสินค้านี้เพิ่มผ่าน Pick-up ไหมคะ?","您想通过Pick-up再购买这个商品吗？"),
-    item("픽업 이용 안내","픽업서비스는 올리브영 앱을 이용해서 미리 구매하고, 방문하여 바로 수령 가능합니다. 바쁘실 때 사용하기 좋은 서비스입니다.","Bạn có thể đặt hàng trước trên ứng dụng Olive Young và đến nhận ngay. Đây là dịch vụ rất tiện lợi khi bạn bận.","Сервис Pick-up позволяет заранее оформить заказ через приложение Olive Young и сразу забрать товар при посещении магазина. Удобно для занятых людей.","บริการ Pick-up สามารถสั่งซื้อผ่านแอป Olive Young ล่วงหน้าและมารับสินค้าได้ทันที เหมาะสำหรับช่วงเวลาที่คุณยุ่งค่ะ","Pick-up服务可通过Olive Young APP提前下单，到店后直接领取，非常适合忙碌时使用。")
+    item(
+      "픽업 이벤트 안내",
+      "지금 픽업서비스를 이용하셔서 하나라도 구매하시면 선물을 드립니다. 이용해보시겠어요?",
+      "Nếu sử dụng dịch vụ Pick-up và mua ít nhất một sản phẩm, bạn sẽ nhận được quà tặng. Bạn muốn thử không?",
+      "Если вы воспользуетесь сервисом Pick-up и купите хотя бы один товар, вы получите подарок. Хотите попробовать?",
+      "หากใช้บริการ Pick-up และซื้อสินค้าอย่างน้อย 1 ชิ้น จะได้รับของขวัญ สนใจลองใช้ไหมคะ?",
+      "使用Pick-up服务并购买任意商品即可获得礼物，您想体验一下吗？"
+    ),
+    item(
+      "추가 구매 제안",
+      "이 상품을 픽업으로 추가 구매해보시겠어요?",
+      "Bạn có muốn mua thêm sản phẩm này bằng Pick-up không?",
+      "Хотите дополнительно купить этот товар через Pick-up?",
+      "สนใจซื้อสินค้านี้เพิ่มผ่าน Pick-up ไหมคะ?",
+      "您想通过Pick-up再购买这个商品吗？"
+    ),
+    item(
+      "픽업 이용 안내",
+      "픽업서비스는 올리브영 앱을 이용해서 미리 구매하고, 방문하여 바로 수령 가능합니다. 바쁘실 때 사용하기 좋은 서비스입니다.",
+      "Bạn có thể đặt hàng trước trên ứng dụng Olive Young và đến nhận ngay. Đây là dịch vụ rất tiện lợi khi bạn bận.",
+      "Сервис Pick-up позволяет заранее оформить заказ через приложение Olive Young и сразу забрать товар при посещении магазина. Удобно для занятых людей.",
+      "บริการ Pick-up สามารถสั่งซื้อผ่านแอป Olive Young ล่วงหน้าและมารับสินค้าได้ทันที เหมาะสำหรับช่วงเวลาที่คุณยุ่งค่ะ",
+      "Pick-up服务可通过Olive Young APP提前下单，到店后直接领取，非常适合忙碌时使用。"
+    )
   ],
 
   kbeauty:[
-    item("K-뷰티 체험","지금 한국에서 인기있는 메이크업을 함께 시연해드리는데 참여해보시겠어요?","Bạn có muốn thử kiểu trang điểm đang được yêu thích ở Hàn Quốc không?","Хотите попробовать популярный корейский макияж?","อยากลองเมคอัพสไตล์เกาหลีที่กำลังนิยมไหมคะ?","您想体验一下韩国现在流行的妆容吗？"),
-    item("SNS 이벤트","SNS에 인증샷을 올리시면 선물을 드리고 있어요.","Nếu đăng ảnh lên SNS, bạn sẽ nhận được quà tặng.","Если вы опубликуете фото в SNS, мы подарим подарок.","ถ้าโพสต์รูปลง SNS จะได้รับของขวัญค่ะ","上传SNS认证照片即可获得礼物。"),
-    item("만족도 조사","이 서비스에 대한 만족도 조사를 해주시겠어요?","Bạn có thể làm khảo sát mức độ hài lòng về dịch vụ này không?","Можете пройти опрос удовлетворенности этой услугой?","ช่วยทำแบบสำรวจความพึงพอใจเกี่ยวกับบริการนี้ได้ไหมคะ?","可以帮我们填写一下对此服务的满意度调查吗？"),
-    item("개인정보 안내","SNS 사진 등 개인정보는 참고용으로만 사용하며, 안전하게 폐기하겠습니다.","Ảnh SNS và thông tin cá nhân chỉ dùng để tham khảo và sẽ được hủy an toàn.","Фото SNS и персональные данные будут использованы только для справки и безопасно удалены.","รูป SNS และข้อมูลส่วนบุคคลจะใช้เพื่ออ้างอิงเท่านั้น และจะถูกทำลายอย่างปลอดภัยค่ะ","SNS照片等个人信息仅作参考使用，并会安全销毁。")
+    item(
+      "K-뷰티 체험",
+      "지금 한국에서 인기있는 메이크업을 함께 시연해드리는데 참여해보시겠어요?",
+      "Bạn có muốn thử kiểu trang điểm đang được yêu thích ở Hàn Quốc không?",
+      "Хотите попробовать популярный корейский макияж?",
+      "อยากลองเมคอัพสไตล์เกาหลีที่กำลังนิยมไหมคะ?",
+      "您想体验一下韩国现在流行的妆容吗？"
+    ),
+    item(
+      "SNS 이벤트",
+      "SNS에 인증샷을 올리시면 선물을 드리고 있어요.",
+      "Nếu đăng ảnh lên SNS, bạn sẽ nhận được quà tặng.",
+      "Если вы опубликуете фото в SNS, мы подарим подарок.",
+      "ถ้าโพสต์รูปลง SNS จะได้รับของขวัญค่ะ",
+      "上传SNS认证照片即可获得礼物。"
+    ),
+    item(
+      "만족도 조사",
+      "이 서비스에 대한 만족도 조사를 해주시겠어요?",
+      "Bạn có thể làm khảo sát mức độ hài lòng về dịch vụ này không?",
+      "Можете пройти опрос удовлетворенности этой услугой?",
+      "ช่วยทำแบบสำรวจความพึงพอใจเกี่ยวกับบริการนี้ได้ไหมคะ?",
+      "可以帮我们填写一下对此服务的满意度调查吗？"
+    ),
+    item(
+      "개인정보 안내",
+      "SNS 사진 등 개인정보는 참고용으로만 사용하며, 안전하게 폐기하겠습니다.",
+      "Ảnh SNS và thông tin cá nhân chỉ dùng để tham khảo và sẽ được hủy an toàn.",
+      "Фото SNS и персональные данные будут использованы только для справки и безопасно удалены.",
+      "รูป SNS และข้อมูลส่วนบุคคลจะใช้เพื่ออ้างอิงเท่านั้น และจะถูกทำลายอย่างปลอดภัยค่ะ",
+      "SNS照片等个人信息仅作参考使用，并会安全销毁。"
+    )
   ],
 
   operation:[
-    item("상품 찾기","찾으시는 상품 있으세요?","Bạn đang tìm sản phẩm nào không?","Вы ищете какой-то товар?","กำลังมองหาสินค้าอะไรอยู่ไหมคะ?","您在找什么商品吗？"),
+    item(
+      "상품 찾기",
+      "찾으시는 상품이 있으신가요?",
+      "Bạn đang tìm sản phẩm nào không?",
+      "Вы ищете какой-то товар?",
+      "กำลังมองหาสินค้าอะไรอยู่ไหมคะ?",
+      "您在找什么商品吗？"
+    ),
     {type:"options", label:"기능 확인"},
-    item("품절 안내","이 상품은 지금 품절이에요.","Sản phẩm này hiện đang hết hàng.","Этот товар сейчас закончился.","สินค้านี้ตอนนี้หมดค่ะ","这个商品现在缺货。"),
-    item("다른 상품 추천","다른 상품을 추천해드릴까요?","Tôi giới thiệu sản phẩm khác cho bạn nhé?","Хотите, я порекомендую другой товар?","แนะนำสินค้าอื่นให้ไหมคะ?","需要给您推荐其他商品吗？"),
-    item("인기 상품 안내","이 상품이 요즘 가장 인기가 많아요.","Sản phẩm này hiện đang rất được yêu thích.","Этот товар сейчас самый популярный.","สินค้านี้ช่วงนี้ได้รับความนิยมมากค่ะ","这个商品最近最受欢迎。")
+    item(
+      "품절 안내",
+      "현재 해당 상품은 품절 상태입니다.",
+      "Sản phẩm này hiện đang hết hàng.",
+      "Этот товар сейчас закончился.",
+      "สินค้านี้ตอนนี้หมดค่ะ",
+      "这个商品现在缺货。"
+    ),
+    item(
+      "다른 상품 추천",
+      "유사한 다른 상품을 추천해드릴까요?",
+      "Tôi giới thiệu sản phẩm tương tự khác cho bạn nhé?",
+      "Хотите, я порекомендую похожий товар?",
+      "แนะนำสินค้าที่คล้ายกันให้ไหมคะ?",
+      "需要给您推荐类似商品吗？"
+    ),
+    item(
+      "인기 상품 안내",
+      "현재 가장 많은 고객님들이 찾으시는 상품입니다.",
+      "Đây là sản phẩm hiện đang được nhiều khách hàng tìm mua nhất.",
+      "Сейчас это один из самых популярных товаров у покупателей.",
+      "สินค้านี้เป็นสินค้าที่ลูกค้าหลายคนกำลังมองหามากที่สุดค่ะ",
+      "这是目前很多顾客都在找的热门商品。"
+    )
   ]
 };
 
-const optionQuestion=item("기능 확인","어떤 기능의 상품을 찾으세요?","Bạn đang tìm sản phẩm có công dụng gì?","Какой эффект товара вы ищете?","ต้องการสินค้าที่ช่วยเรื่องอะไรคะ?","您想找什么功效的商品？");
+const optionQuestion=item(
+  "기능 확인",
+  "어떤 기능의 상품을 찾으세요?",
+  "Bạn đang tìm sản phẩm có công dụng gì?",
+  "Какой эффект товара вы ищете?",
+  "ต้องการสินค้าที่ช่วยเรื่องอะไรคะ?",
+  "您想找什么功效的商品？"
+);
 
 const optionItems=[
   item("✨ 미백","이 상품은 미백에 도움되는 상품입니다.","Sản phẩm này giúp làm sáng da.","Этот товар помогает осветлить кожу.","สินค้านี้ช่วยเรื่องความกระจ่างใสค่ะ","这个商品有助于美白。"),
@@ -296,7 +448,11 @@ const optionItems=[
   item("💧 수분","이 상품은 수분에 도움되는 상품입니다.","Sản phẩm này giúp cấp ẩm cho da.","Этот товар помогает увлажнить кожу.","สินค้านี้ช่วยเติมความชุ่มชื้นให้ผิวค่ะ","这个商品有助于补水保湿。")
 ];
 
-const quick=[data.signup[0],data.signup[1],data.signup[2]];
+const quick=[
+  data.signup[0],
+  data.signup[1],
+  data.signup[2]
+];
 
 function renderLangs(){
   const box=document.getElementById("langs");
@@ -305,7 +461,11 @@ function renderLangs(){
     const b=document.createElement("button");
     b.className="lang"+(k===currentLang?" active":"");
     b.innerHTML=`<span class="flag">${langInfo[k][0]}</span>${langInfo[k][1]}`;
-    b.onclick=()=>{currentLang=k;renderLangs();renderOptions();};
+    b.onclick=()=>{
+      currentLang=k;
+      renderLangs();
+      renderOptions();
+    };
     box.appendChild(b);
   });
 }
@@ -318,7 +478,10 @@ function renderQuick(){
     const b=document.createElement("button");
     b.className="quick";
     b.innerHTML=`<span class="quickIcon">${icons[i]}</span><span>${it.label}</span>`;
-    b.onclick=()=>{previousScreen="home";openDetail(it,"빠른 응대");};
+    b.onclick=()=>{
+      previousScreen="home";
+      openDetail(it,"빠른 응대");
+    };
     box.appendChild(b);
   });
 }
@@ -344,8 +507,14 @@ function openList(cat){
     const b=document.createElement("button");
     b.className="phrase";
     b.innerHTML=`<span>${it.label}</span><span>›</span>`;
-    if(it.type==="options"){b.onclick=()=>openOptions();}
-    else{b.onclick=()=>{previousScreen="list";openDetail(it,categories[cat][0]);};}
+    if(it.type==="options"){
+      b.onclick=()=>openOptions();
+    }else{
+      b.onclick=()=>{
+        previousScreen="list";
+        openDetail(it,categories[cat][0]);
+      };
+    }
     list.appendChild(b);
   });
   show("list");
@@ -366,7 +535,10 @@ function renderOptions(){
     const b=document.createElement("button");
     b.className="featureTile";
     b.innerText=it.label;
-    b.onclick=()=>{previousScreen="optionScreen";openDetail(it,"기능 확인");};
+    b.onclick=()=>{
+      previousScreen="optionScreen";
+      openDetail(it,"기능 확인");
+    };
     grid.appendChild(b);
   });
 }
@@ -375,7 +547,18 @@ function openDetail(it,title){
   currentItem=it;
   document.getElementById("detailTitle").innerText=title;
   document.getElementById("detailLabel").innerText=it.label;
-  document.getElementById("detailKo").innerText=it.ko;
+
+  const ko=document.getElementById("detailKo");
+  ko.innerText=it.ko;
+
+  if(it.label==="멤버십 혜택 안내"){
+    ko.style.fontSize="18px";
+    ko.style.lineHeight="1.6";
+  }else{
+    ko.style.fontSize="23px";
+    ko.style.lineHeight="1.35";
+  }
+
   document.getElementById("detailTr").innerText=it[currentLang];
   document.getElementById("speakBtn").innerText="🔊 음성 재생";
   show("detail");
@@ -386,8 +569,13 @@ function show(id){
   document.getElementById(id).classList.add("active");
 }
 
-function goHome(){show("home")}
-function goBackFromDetail(){show(previousScreen)}
+function goHome(){
+  show("home");
+}
+
+function goBackFromDetail(){
+  show(previousScreen);
+}
 
 function speakText(text){
   const utter=new SpeechSynthesisUtterance(text);
@@ -402,7 +590,9 @@ function speak(){
   const btn=document.getElementById("speakBtn");
   btn.innerText="🔊 재생중...";
   speakText(currentItem[currentLang]);
-  setTimeout(()=>{btn.innerText="🔊 음성 재생";},1800);
+  setTimeout(()=>{
+    btn.innerText="🔊 음성 재생";
+  },1800);
 }
 
 function speakFeatureQuestion(){
