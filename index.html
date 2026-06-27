@@ -161,28 +161,55 @@ button{font-family:inherit;cursor:pointer;border:0}
   text-align:center;
 }
 
-.pickupImage{
-  width:100%;
-  max-height:330px;
-  object-fit:contain;
-  border-radius:18px;
+.pickupImageWrap{
+  position:relative;
+  border-radius:22px;
   border:1px solid var(--line);
   background:#fff;
-  margin:10px 0 18px;
+  margin:10px 0 12px;
+  overflow:hidden;
+  box-shadow:0 4px 14px rgba(0,0,0,.045);
 }
-.pickupNav{
-  display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:10px;
+.pickupImage{
+  display:block;
+  width:100%;
+  max-height:360px;
+  object-fit:contain;
+  background:#fff;
 }
+.slideArrow{
+  position:absolute;
+  top:50%;
+  transform:translateY(-50%);
+  width:44px;
+  height:72px;
+  border-radius:999px;
+  background:rgba(47,93,32,.82);
+  color:white;
+  font-size:34px;
+  font-weight:950;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:0 4px 14px rgba(0,0,0,.18);
+}
+.slideArrow.left{left:10px}
+.slideArrow.right{right:10px}
+.slideArrow:disabled{opacity:.25}
 .stepDots{
   text-align:center;
-  font-size:20px;
-  letter-spacing:6px;
+  font-size:17px;
+  letter-spacing:5px;
   color:#b7c9aa;
-  margin:8px 0 12px;
+  margin:8px 0 18px;
 }
 .stepDots .on{color:var(--deep)}
+.swipeHint{
+  text-align:center;
+  color:#777;
+  font-size:12px;
+  margin:0 0 10px;
+}
 .pickupDone{
   text-align:center;
   padding:36px 14px;
@@ -253,15 +280,16 @@ button{font-family:inherit;cursor:pointer;border:0}
     </div>
     <div class="section">
       <div class="label" id="pickupStepLabel">1 / 7</div>
+      <div class="pickupImageWrap" id="pickupImageWrap">
+        <button id="pickupPrevBtn" class="slideArrow left" onclick="prevPickupStep()">‹</button>
+        <img id="pickupStepImg" class="pickupImage" src="pickup1.png" alt="픽업 방법 이미지">
+        <button id="pickupNextBtn" class="slideArrow right" onclick="nextPickupStep()">›</button>
+      </div>
       <div id="pickupStepDots" class="stepDots"></div>
-      <img id="pickupStepImg" class="pickupImage" src="pickup1.png" alt="픽업 방법 이미지">
+      <div class="swipeHint">사진을 좌우로 넘길 수 있습니다.</div>
       <div id="pickupStepKo" class="ko"></div>
       <div id="pickupStepTr" class="tr"></div>
       <button id="pickupSpeakBtn" class="action speak" onclick="speakPickupStep()">🔊 음성 재생</button>
-      <div class="pickupNav">
-        <button id="pickupPrevBtn" class="action copy" onclick="prevPickupStep()">‹ 이전</button>
-        <button id="pickupNextBtn" class="action speak" onclick="nextPickupStep()">다음 ›</button>
-      </div>
     </div>
   </div>
 
@@ -800,11 +828,8 @@ function renderPickupStep(){
   prev.disabled=pickupStepIndex===0;
   prev.style.opacity=pickupStepIndex===0?".45":"1";
 
-  if(pickupStepIndex===pickupSteps.length-1){
-    next.innerText="처음으로";
-  }else{
-    next.innerText="다음 ›";
-  }
+  next.disabled=false;
+  next.style.opacity="1";
 }
 
 function nextPickupStep(){
@@ -812,8 +837,6 @@ function nextPickupStep(){
   if(pickupStepIndex < pickupSteps.length-1){
     pickupStepIndex++;
     renderPickupStep();
-  }else{
-    goHome();
   }
 }
 
@@ -845,6 +868,35 @@ function speakPickupStep(){
 
   speechSynthesis.cancel();
   speechSynthesis.speak(utter);
+}
+
+let pickupTouchStartX=0;
+let pickupTouchEndX=0;
+
+function setupPickupSwipe(){
+  const wrap=document.getElementById("pickupImageWrap");
+  if(!wrap)return;
+
+  wrap.addEventListener("touchstart",function(e){
+    pickupTouchStartX=e.changedTouches[0].screenX;
+  },{passive:true});
+
+  wrap.addEventListener("touchend",function(e){
+    pickupTouchEndX=e.changedTouches[0].screenX;
+    handlePickupSwipe();
+  },{passive:true});
+}
+
+function handlePickupSwipe(){
+  const diff=pickupTouchEndX-pickupTouchStartX;
+
+  if(Math.abs(diff)<45)return;
+
+  if(diff<0){
+    nextPickupStep();
+  }else{
+    prevPickupStep();
+  }
 }
 
 function show(id){
@@ -928,6 +980,7 @@ renderLangs();
 renderQuick();
 renderMenus();
 renderOptions();
+setupPickupSwipe();
 </script>
 </body>
 </html>
