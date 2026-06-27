@@ -160,6 +160,37 @@ button{font-family:inherit;cursor:pointer;border:0}
   margin-top:18px;
   text-align:center;
 }
+
+.pickupImage{
+  width:100%;
+  max-height:330px;
+  object-fit:contain;
+  border-radius:18px;
+  border:1px solid var(--line);
+  background:#fff;
+  margin:10px 0 18px;
+}
+.pickupNav{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+}
+.stepDots{
+  text-align:center;
+  font-size:20px;
+  letter-spacing:6px;
+  color:#b7c9aa;
+  margin:8px 0 12px;
+}
+.stepDots .on{color:var(--deep)}
+.pickupDone{
+  text-align:center;
+  padding:36px 14px;
+}
+.pickupDoneIcon{
+  font-size:72px;
+  margin-bottom:18px;
+}
 </style>
 </head>
 
@@ -212,6 +243,25 @@ button{font-family:inherit;cursor:pointer;border:0}
       <div id="featureQuestion" class="featureQuestion"></div>
       <div class="featureGrid" id="featureGrid"></div>
       <button class="action speak" onclick="speakFeatureQuestion()">🔊 질문 음성 재생</button>
+    </div>
+  </div>
+
+  <div id="pickupGuideScreen" class="screen">
+    <div class="topbar">
+      <button class="back" onclick="openList('pickup')">‹</button>
+      <div>픽업 방법 안내</div>
+    </div>
+    <div class="section">
+      <div class="label" id="pickupStepLabel">1 / 7</div>
+      <div id="pickupStepDots" class="stepDots"></div>
+      <img id="pickupStepImg" class="pickupImage" src="pickup1.png" alt="픽업 방법 이미지">
+      <div id="pickupStepKo" class="ko"></div>
+      <div id="pickupStepTr" class="tr"></div>
+      <button id="pickupSpeakBtn" class="action speak" onclick="speakPickupStep()">🔊 음성 재생</button>
+      <div class="pickupNav">
+        <button id="pickupPrevBtn" class="action copy" onclick="prevPickupStep()">‹ 이전</button>
+        <button id="pickupNextBtn" class="action speak" onclick="nextPickupStep()">다음 ›</button>
+      </div>
     </div>
   </div>
 
@@ -372,6 +422,8 @@ const data={
       "บริการ Pick-up สามารถสั่งซื้อผ่านแอป Olive Young ล่วงหน้าและมารับสินค้าได้ทันที เหมาะสำหรับช่วงเวลาที่คุณยุ่งค่ะ",
       "Pick-up服务可通过Olive Young APP提前下单，到店后直接领取，非常适合忙碌时使用。"
     )
+    ,
+    {type:"pickupGuide", label:"📱 픽업 방법 안내"}
   ],
 
   kbeauty:[
@@ -515,6 +567,67 @@ const optionItems=[
     zh:"这个商品有助于补水保湿。"
   }
 ];
+let pickupStepIndex=0;
+
+const pickupSteps=[
+  {
+    image:"pickup1.png",
+    ko:"원하는 상품을 검색해주세요.",
+    vi:"Hãy tìm sản phẩm bạn muốn.",
+    ru:"Найдите нужный товар.",
+    th:"ค้นหาสินค้าที่ต้องการค่ะ",
+    zh:"请搜索您想要的商品。"
+  },
+  {
+    image:"pickup2.png",
+    ko:"상품 바코드를 스캔해주세요.",
+    vi:"Hãy quét mã vạch của sản phẩm.",
+    ru:"Отсканируйте штрихкод товара.",
+    th:"สแกนบาร์โค้ดสินค้า",
+    zh:"请扫描商品条码。"
+  },
+  {
+    image:"pickup3.png",
+    ko:"장바구니에 담아주세요.",
+    vi:"Thêm sản phẩm vào giỏ hàng.",
+    ru:"Добавьте товар в корзину.",
+    th:"เพิ่มสินค้าไปยังตะกร้า",
+    zh:"请加入购物车。"
+  },
+  {
+    image:"pickup4.png",
+    ko:"픽업할 매장을 선택해주세요.",
+    vi:"Chọn cửa hàng nhận Pick-up.",
+    ru:"Выберите магазин для получения.",
+    th:"เลือกร้านที่จะรับสินค้า",
+    zh:"请选择取货门店。"
+  },
+  {
+    image:"pickup5.png",
+    ko:"상품과 수량을 확인해주세요.",
+    vi:"Kiểm tra sản phẩm và số lượng.",
+    ru:"Проверьте товар и количество.",
+    th:"ตรวจสอบสินค้าและจำนวน",
+    zh:"请确认商品和数量。"
+  },
+  {
+    image:"pickup6.png",
+    ko:"결제를 완료해주세요.",
+    vi:"Hoàn tất thanh toán.",
+    ru:"Завершите оплату.",
+    th:"ชำระเงินให้เรียบร้อย",
+    zh:"请完成付款。"
+  },
+  {
+    image:"pickup7.png",
+    ko:"매장에 방문하여 픽업 바코드를 직원에게 보여주세요.",
+    vi:"Đến cửa hàng và đưa mã vạch Pick-up cho nhân viên.",
+    ru:"Придите в магазин и покажите сотруднику штрихкод Pick-up.",
+    th:"มาที่ร้านและแสดงบาร์โค้ด Pick-up ให้พนักงานดูค่ะ",
+    zh:"到门店后，请向员工出示 Pick-up 条码。"
+  }
+];
+
 const quick=[
   data.signup[0],
   data.signup[1],
@@ -576,6 +689,8 @@ function openList(cat){
     b.innerHTML=`<span>${it.label}</span><span>›</span>`;
     if(it.type==="options"){
       b.onclick=()=>openOptions();
+    }else if(it.type==="pickupGuide"){
+      b.onclick=()=>openPickupGuide();
     }else{
       b.onclick=()=>{
         previousScreen="list";
@@ -659,6 +774,79 @@ function openDetail(it,title){
   show("detail");
 }
 
+function openPickupGuide(){
+  pickupStepIndex=0;
+  renderPickupStep();
+  show("pickupGuideScreen");
+}
+
+function renderPickupStep(){
+  const step=pickupSteps[pickupStepIndex];
+  const label=document.getElementById("pickupStepLabel");
+  const dots=document.getElementById("pickupStepDots");
+  const img=document.getElementById("pickupStepImg");
+  const ko=document.getElementById("pickupStepKo");
+  const tr=document.getElementById("pickupStepTr");
+  const prev=document.getElementById("pickupPrevBtn");
+  const next=document.getElementById("pickupNextBtn");
+  const speakBtn=document.getElementById("pickupSpeakBtn");
+
+  label.innerText=`${pickupStepIndex+1} / ${pickupSteps.length}`;
+  dots.innerHTML=pickupSteps.map((_,i)=>i===pickupStepIndex?'<span class="on">●</span>':'●').join('');
+  img.src=step.image;
+  ko.innerText=step.ko;
+  tr.innerText=step[currentLang];
+  speakBtn.innerText="🔊 음성 재생";
+  prev.disabled=pickupStepIndex===0;
+  prev.style.opacity=pickupStepIndex===0?".45":"1";
+
+  if(pickupStepIndex===pickupSteps.length-1){
+    next.innerText="처음으로";
+  }else{
+    next.innerText="다음 ›";
+  }
+}
+
+function nextPickupStep(){
+  speechSynthesis.cancel();
+  if(pickupStepIndex < pickupSteps.length-1){
+    pickupStepIndex++;
+    renderPickupStep();
+  }else{
+    goHome();
+  }
+}
+
+function prevPickupStep(){
+  speechSynthesis.cancel();
+  if(pickupStepIndex > 0){
+    pickupStepIndex--;
+    renderPickupStep();
+  }
+}
+
+function speakPickupStep(){
+  const btn=document.getElementById("pickupSpeakBtn");
+  const step=pickupSteps[pickupStepIndex];
+
+  if(speechSynthesis.speaking){
+    speechSynthesis.cancel();
+    btn.innerText="🔊 음성 재생";
+    return;
+  }
+
+  const utter=new SpeechSynthesisUtterance(step[currentLang]);
+  utter.lang=langInfo[currentLang][2];
+  utter.rate=.85;
+
+  btn.innerText="⏹ 음성 멈춤";
+  utter.onend=function(){btn.innerText="🔊 음성 재생";};
+  utter.onerror=function(){btn.innerText="🔊 음성 재생";};
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
+}
+
 function show(id){
   document.querySelectorAll(".screen").forEach(s=>s.classList.remove("active"));
   document.getElementById(id).classList.add("active");
@@ -710,27 +898,21 @@ function speak(){
 }
 
 function speakFeatureQuestion(){
-  const btn = document.querySelector("#optionScreen .speak");
+  const btn=document.querySelector("#optionScreen .speak");
 
   if(speechSynthesis.speaking){
     speechSynthesis.cancel();
-    btn.innerText = "🔊 질문 음성 재생";
+    btn.innerText="🔊 질문 음성 재생";
     return;
   }
 
-  const utter = new SpeechSynthesisUtterance(optionQuestion[currentLang]);
-  utter.lang = langInfo[currentLang][2];
-  utter.rate = .85;
+  const utter=new SpeechSynthesisUtterance(optionQuestion[currentLang]);
+  utter.lang=langInfo[currentLang][2];
+  utter.rate=.85;
 
-  btn.innerText = "⏹ 질문 음성 멈춤";
-
-  utter.onend = function(){
-    btn.innerText = "🔊 질문 음성 재생";
-  };
-
-  utter.onerror = function(){
-    btn.innerText = "🔊 질문 음성 재생";
-  };
+  btn.innerText="⏹ 질문 음성 멈춤";
+  utter.onend=function(){btn.innerText="🔊 질문 음성 재생";};
+  utter.onerror=function(){btn.innerText="🔊 질문 음성 재생";};
 
   speechSynthesis.cancel();
   speechSynthesis.speak(utter);
