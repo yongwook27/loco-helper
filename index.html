@@ -764,7 +764,23 @@ function openDetail(it,title){
 
   document.getElementById("detailTitle").innerText=title;
   document.getElementById("detailLabel").innerText=itemLabel;
+let oldImg=document.getElementById("detailImage");
+if(oldImg) oldImg.remove();
 
+if(itemLabel==="SNS 이벤트"){
+  const img=document.createElement("img");
+  img.id="detailImage";
+  img.src="sns.png";
+  img.style.width="100%";
+  img.style.borderRadius="18px";
+  img.style.marginBottom="22px";
+  img.style.display="block";
+
+  document.querySelector(".detail").insertBefore(
+    img,
+    document.getElementById("detailKo")
+  );
+}
   const ko=document.getElementById("detailKo");
   ko.innerText=it.ko;
 
